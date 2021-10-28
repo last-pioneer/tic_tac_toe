@@ -93,13 +93,11 @@ def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p):
     '''
 
 
-def player_turn(name_1, name_2, p):
-    playing_field(name_1, 5, name_2, 2, 6, p)
-
-    # pass
+def player_turn(gamer_1, gamer_2, p):
+    playing_field(gamer_1, 5, gamer_2, 2, 6, p)
 
 
-def game_master(name_1, name_2):
+def game_master(gamer_1, gamer_2):
     """
     Эта функция будет контролировать игровой процесс.
     р - это список значений полей игры, для определения правильности ходов, ничьей или победы.
@@ -114,11 +112,11 @@ def game_master(name_1, name_2):
     s_g_1 = 0
     s_g_2 = 0
     while p.count(' ') != 0:
-        player_turn(name_1, name_2, p)
+        player_turn(gamer_1, gamer_2, p)
 
 
 # gamer_1, gamer_2 = greetings()
 # playing_field(gamer_1, gamer_2)
 
-name_1, name_2 = greetings()
-game_master(name_1, name_2)
+gamer_1, gamer_2 = greetings()
+game_master(gamer_1, gamer_2)
