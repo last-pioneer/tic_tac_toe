@@ -47,36 +47,78 @@ def greetings():
     return name_1, name_2
 
 
-def playing_field(gamer_1, gamer_2):
+def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p):
     """
     эта функция будет создавать, обновлять и отрисовывать изменения на игровом поле.
-    :return:
     print('\n'*100) --> Рисует 100 пустых строк, тем самым затирая все что было в 100 строках
+    :return:(p)
     """
+    print('\n' * 10)
     print('     Крестики нолики 1.0')
-    print('   0 - игр сыграно в ничью')
-    print('   0 -  ' + gamer_1)
-    print('   0 -  ' + gamer_2)
+    print('   ' + str(s_g_0) + ' - игр сыграно в ничью')
+    print('   ' + str(s_g_1) + ' - игр выиграл ' + gamer_1)
+    print('   ' + str(s_g_2) + ' - игр выиграл ' + gamer_2)
+    print('\n')
     print('   |       |       |       |')
+    print('   |   ' + p[6] + '   |   ' + p[7] + '   |   ' + p[8] + '   |    7    8    9')
     print('   |       |       |       |')
-    print('   |   7   |   8   |   9   |')
     print('   -------------------------')
     print('   |       |       |       |')
+    print('   |   ' + p[3] + '   |   ' + p[4] + '   |   ' + p[5] + '   |    4    5    6')
     print('   |       |       |       |')
-    print('   |   4   |   5   |   6   |')
     print('   -------------------------')
     print('   |       |       |       |')
+    print('   |   ' + p[0] + '   |   ' + p[1] + '   |   ' + p[2] + '   |    1    2    3')
     print('   |       |       |       |')
-    print('   |   1   |   2   |   3   |')
+    print('\n' * 3)
+    x = input('Следующий ход: ' + gamer_1 + ', сделайте свой ход, нажмите кнопку 1-9 : ')
+    y = '123456789'
+    if x in y:
+        x = int(x)
+        if p[x-1] != ' ':
+            print('Клеточка занята, выберите цифру не занятой клеточки!')
+            time.sleep(2)
+            playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p)
+        else:
+            p.insert(x - 1, 'Х')
+            return p
+
+    else:
+        print('Вы ввели не правильное число, введите цифру от 1 до 9.')
+        time.sleep(2)
+        playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p)
+    ''' 
+    тут надо подставить имя игрока который должен ходить
+    
+    '''
 
 
-def game_master():
+def player_turn(name_1, name_2, p):
+    playing_field(name_1, 5, name_2, 2, 6, p)
+
+    # pass
+
+
+def game_master(name_1, name_2):
     """
     Эта функция будет контролировать игровой процесс.
+    р - это список значений полей игры, для определения правильности ходов, ничьей или победы.
+    s_g_0 - переменная будет хранить кол-во игр сыгранных в ничью
+    s_g_1 - переменная будет хранить кол-во игр выигранных игроком_1
+    s_g_2 - переменная будет хранить кол-во игр выигранных игроком_2
+
     :return:
     """
-    pass
+    p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    s_g_0 = 0
+    s_g_1 = 0
+    s_g_2 = 0
+    while p.count(' ') != 0:
+        player_turn(name_1, name_2, p)
 
 
-gamer_1, gamer_2 = greetings()
-playing_field(gamer_1, gamer_2)
+# gamer_1, gamer_2 = greetings()
+# playing_field(gamer_1, gamer_2)
+
+name_1, name_2 = greetings()
+game_master(name_1, name_2)
