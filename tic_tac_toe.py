@@ -69,7 +69,7 @@ def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p, round_counter):
     print('\n' * 3)
 
 
-def game_master(name_1, name_2, priority, round_counter):
+def game_master(name_1, name_2, priority):
     """
     Эта функция будет контролировать игровой процесс.
     р - это список значений полей игры, для определения правильности ходов, ничьей или победы.
@@ -86,159 +86,126 @@ def game_master(name_1, name_2, priority, round_counter):
     s_g_0 = int(0)
     s_g_1 = int(0)
     s_g_2 = int(0)
-    playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
+    winner = 4
+    counter = 0
+    while counter <= 11:
+        if round_counter % 2 != 0:
+            p, winner, round_counter = game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter)
+        else:
+            p, winner, round_counter = game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter)
+        round_counter += 1
+        counter += 1
+        p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+        if winner == 0:
+            s_g_0 += 1
+        elif winner == 1:
+            s_g_1 += 1
+        elif winner == 2:
+            s_g_2 += 1
+        else:
+            print('Ошибка определения победителя в game_master')
+        time.sleep(3)
+
+def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
+    winner = 0
+    turn_counter = 1
+    while turn_counter < 11:
+        if win(p) == 0:
+            if turn_counter % 2 != 0:
+                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+                game_turn(p, name_1, 'X')
+                turn_counter += 1
+            else:
+                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+                game_turn(p, name_2, 'O')
+                turn_counter += 1
+        elif win(p) == 1:
+            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+            print('Победил игрок -  ' + name_1 + ' Поздравляем!')
+            winner = 1
+            return p, winner, round_counter
+        elif win(p) == 2:
+            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+            print('Победил игрок -  ' + name_2 + ' Поздравляем!')
+            winner = 2
+            return p, winner, round_counter
+        else:
+            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+            print('Ходы закончились, ничья, попробуйте сыграть еще!')
+            return p, winner, round_counter
+    print('Непонятный результат в функции game_round ' + str(winner))
+    print(p)
+    return p
+
+
+def game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
+    winner = 0
+    turn_counter = 1
+    while turn_counter < 11:
+        if win(p) == 0:
+            if turn_counter % 2 != 0:
+                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+                game_turn(p, name_2, 'X')
+                turn_counter += 1
+            else:
+                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+                game_turn(p, name_1, 'O')
+                turn_counter += 1
+        elif win(p) == 1:
+            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+            print('Победил игрок -  ' + name_2 + ' Поздравляем!')
+            winner = 2
+            return p, winner, round_counter
+        elif win(p) == 2:
+            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+            print('Победил игрок -  ' + name_1 + ' Поздравляем!')
+            winner = 1
+            return p, winner, round_counter
+        else:
+            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
+            print('Ходы закончились, ничья, попробуйте сыграть еще!')
+            return p, winner, round_counter
+    print('Непонятный результат в функции game_round ' + str(winner))
+    print(p)
+    return p
+
+
+def game_turn(p, name, symbol):
+    y = '123456789'
+    q = 0
+    while q != 1:
+        x = input('Игрок: ' + name + ', сделайте свой ход, нажмите кнопку 1-9 : ')
+        if x in y and x != '':
+            x = int(x)
+            if p[x - 1] != ' ':
+                print('Клеточка занята, выберите цифру не занятой клеточки!')
+            else:
+                p[x - 1] = symbol
+                q = 1
+                return p
+        else:
+            print('Вы ввели не правильное число, введите цифру от 1 до 9.')
+    pass
+
+
+def win(p):
+    w = 0
     if p[0] == p[1] == p[2] == 'X' or p[3] == p[4] == p[5] == 'X' or p[6] == p[7] == p[8] == 'X' \
             or p[0] == p[3] == p[6] == 'X' or p[1] == p[4] == p[7] == 'X' or p[2] == p[5] == p[3] == 'X' \
             or p[0] == p[4] == p[8] == 'X' or p[2] == p[4] == p[6] == 'X':
-        s_g_1 += 1
-        round_counter += 1
-        time.sleep(3)
-        playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-        print('Начинаем следующий раунд!')
-        time.sleep(3)
-        print('\n' * 100)
-        p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-        playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-        game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-
+        w = 1
+        return w
     elif p[0] == p[1] == p[2] == 'O' or p[3] == p[4] == p[5] == 'O' or p[6] == p[7] == p[8] == 'O' \
             or p[0] == p[3] == p[6] == 'O' or p[1] == p[4] == p[7] == 'O' or p[2] == p[5] == p[3] == 'O' \
             or p[0] == p[4] == p[8] == 'O' or p[2] == p[4] == p[6] == 'O':
-        s_g_2 += 1
-        round_counter += 1
-        playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-        time.sleep(3)
-        print('\n' * 100)
-        print('Начинаем следующий раунд!')
-        time.sleep(3)
-        print('\n' * 100)
-        p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-        playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-        game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
+        w = 2
+        return w
+    elif p.count(' ') == 0:
+        w = 3
+        return w
     else:
-        s_g_0 = int(s_g_0)
-        s_g_0 += 1
-        round_counter += 1
-    p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-    playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-    time.sleep(2)
-    print('\n' * 100)
-    print('Начинаем следующий раунд!')
-    print('\n' * 10)
-    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-
-
-def player_turn_1(name, p):
-    y = '123456789'
-    q = 0
-    while q != 1:
-        x = input('Игрок: ' + name + ', сделайте свой ход, нажмите кнопку 1-9 : ')
-        if x in y and x != '':
-            x = int(x)
-            if p[x - 1] != ' ':
-                print('Клеточка занята, выберите цифру не занятой клеточки!')
-            else:
-                p[x - 1] = 'X'
-                q = 1
-                priority = 1
-                return priority
-        else:
-            print('Вы ввели не правильное число, введите цифру от 1 до 9.')
-
-
-def player_turn_2(name, p):
-    y = '123456789'
-    q = 0
-    while q != 1:
-        x = input('Игрок: ' + name + ', сделайте свой ход, нажмите кнопку 1-9 : ')
-        if x in y and x != '':
-            x = int(x)
-            if p[x - 1] != ' ':
-                print('Клеточка занята, выберите цифру не занятой клеточки!')
-            else:
-                p[x - 1] = 'O'
-                q = 1
-                priority = 0
-                return priority
-        else:
-            print('Вы ввели не правильное число, введите цифру от 1 до 9.')
-
-
-def game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter):
-    if p.count(' ') != 0:
-        if round_counter == 0:
-            if priority == 0:
-                priority = player_turn_1(name_1, p)
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                if p[0] == p[1] == p[2] == 'X' or p[3] == p[4] == p[5] == 'X' or p[6] == p[7] == p[8] == 'X' \
-                        or p[0] == p[3] == p[6] == 'X' or p[1] == p[4] == p[7] == 'X' or p[2] == p[5] == p[3] == 'X' \
-                        or p[0] == p[4] == p[8] == 'X' or p[2] == p[4] == p[6] == 'X':
-                    print('Победил игрок -  ' + name_1 + ' Поздравляем!')
-                    s_g_1 += 1
-                    round_counter += 1
-                else:
-                    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-            else:
-                priority = player_turn_2(name_2, p)
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                if p[0] == p[1] == p[2] == 'O' or p[3] == p[4] == p[5] == 'O' or p[6] == p[7] == p[8] == 'O' \
-                        or p[0] == p[3] == p[6] == 'O' or p[1] == p[4] == p[7] == 'O' or p[2] == p[5] == p[3] == 'O' \
-                        or p[0] == p[4] == p[8] == 'O' or p[2] == p[4] == p[6] == 'O':
-                    print('Победил игрок -  ' + name_2 + ' Поздравляем!')
-                    s_g_2 += 1
-                    round_counter += 1
-                else:
-                    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-        elif (round_counter + 1) % 2 == 0:
-            if priority == 1:
-                priority = player_turn_1(name_1, p)
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                if p[0] == p[1] == p[2] == 'X' or p[3] == p[4] == p[5] == 'X' or p[6] == p[7] == p[8] == 'X' \
-                        or p[0] == p[3] == p[6] == 'X' or p[1] == p[4] == p[7] == 'X' or p[2] == p[5] == p[3] == 'X' \
-                        or p[0] == p[4] == p[8] == 'X' or p[2] == p[4] == p[6] == 'X':
-                    print('Победил игрок -  ' + name_1 + ' Поздравляем!')
-                    s_g_1 += 1
-                    round_counter += 1
-                else:
-                    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-            else:
-                priority = player_turn_2(name_2, p)
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                if p[0] == p[1] == p[2] == 'O' or p[3] == p[4] == p[5] == 'O' or p[6] == p[7] == p[8] == 'O' \
-                        or p[0] == p[3] == p[6] == 'O' or p[1] == p[4] == p[7] == 'O' or p[2] == p[5] == p[3] == 'O' \
-                        or p[0] == p[4] == p[8] == 'O' or p[2] == p[4] == p[6] == 'O':
-                    print('Победил игрок -  ' + name_2 + ' Поздравляем!')
-                    s_g_2 += 1
-                    round_counter += 1
-                else:
-                    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-        elif round_counter % 2:
-            if priority == 0:
-                priority = player_turn_1(name_1, p)
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                if p[0] == p[1] == p[2] == 'X' or p[3] == p[4] == p[5] == 'X' or p[6] == p[7] == p[8] == 'X' \
-                        or p[0] == p[3] == p[6] == 'X' or p[1] == p[4] == p[7] == 'X' or p[2] == p[5] == p[3] == 'X' \
-                        or p[0] == p[4] == p[8] == 'X' or p[2] == p[4] == p[6] == 'X':
-                    print('Победил игрок -  ' + name_1 + ' Поздравляем!')
-                    s_g_1 += 1
-                    round_counter += 1
-                else:
-                    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-            else:
-                priority = player_turn_2(name_2, p)
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                if p[0] == p[1] == p[2] == 'O' or p[3] == p[4] == p[5] == 'O' or p[6] == p[7] == p[8] == 'O' \
-                        or p[0] == p[3] == p[6] == 'O' or p[1] == p[4] == p[7] == 'O' or p[2] == p[5] == p[3] == 'O' \
-                        or p[0] == p[4] == p[8] == 'O' or p[2] == p[4] == p[6] == 'O':
-                    print('Победил игрок -  ' + name_2 + ' Поздравляем!')
-                    s_g_2 += 1
-                    round_counter += 1
-                else:
-                    game_round(name_1, s_g_1, name_2, s_g_2, s_g_0, p, priority, round_counter)
-    else:
-        return s_g_0
+        return w
 
 
 p1, p2, p3 = greetings()
-game_master(p1, p2, p3, 0)
+game_master(p1, p2, p3)
