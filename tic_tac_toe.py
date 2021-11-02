@@ -46,7 +46,7 @@ def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p, round_counter):
     """
     эта функция будет создавать, обновлять и отрисовывать изменения на игровом поле.
     print('\n'*100) --> Рисует 100 пустых строк, тем самым затирая все что было в 100 строках
-    :return:
+    :return: none
     """
     print('\n' * 10)
     print('     Крестики нолики 1.0')
@@ -72,14 +72,14 @@ def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p, round_counter):
 def game_master(name_1, name_2, priority):
     """
     Эта функция будет контролировать игровой процесс.
-    р - это список значений полей игры, для определения правильности ходов, ничьей или победы.
+    р - это список значений клеток поля игры, для определения правильности ходов, ничьей или победы.
     s_g_0 - переменная будет хранить кол-во игр сыгранных в ничью
     s_g_1 - переменная будет хранить кол-во игр выигранных игроком_1
     s_g_2 - переменная будет хранить кол-во игр выигранных игроком_2
     priority - хранит очередность ходов.
     round_counter - счетчик раундов
 
-    :return:
+    :return: none
     """
     p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
     round_counter = 0
@@ -108,9 +108,20 @@ def game_master(name_1, name_2, priority):
 
 
 def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
+    '''
+    нечетный раунд
+    :param name_1:
+    :param name_2:
+    :param p:
+    :param s_g_0:
+    :param s_g_1:
+    :param s_g_2:
+    :param round_counter:
+    :return: р - список содержащий значения клеток поля
+    '''
     winner = 0
     turn_counter = 1
-    while turn_counter < 11:
+    while turn_counter < 10:
         if win(p) == 0:
             if turn_counter % 2 != 0:
                 playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
@@ -140,6 +151,17 @@ def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
 
 
 def game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
+    '''
+    четный раунд
+    :param name_1:
+    :param name_2:
+    :param p:
+    :param s_g_0:
+    :param s_g_1:
+    :param s_g_2:
+    :param round_counter:
+    :return: p - список содержащий значения клеток поля
+    '''
     winner = 0
     turn_counter = 1
     while turn_counter < 11:
@@ -172,6 +194,15 @@ def game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
 
 
 def game_turn(p, name, symbol):
+    '''
+    функция обрабатывает ход игрока, проверяет правильность ввода и \
+     добавляет в список поля крестик или нолик
+
+    :param p: список содержащий значения клеток поля перед ходом
+    :param name: имя текущего игорока
+    :param symbol: крестик или нолик
+    :return: р - список содержащий значения клеток поля после хода
+    '''
     y = '123456789'
     q = 0
     while q != 1:
@@ -192,9 +223,13 @@ def game_turn(p, name, symbol):
 def win(p):
     ''' функция определяет завершение раунда
     возвращаемые значения:
-    1 - победил игрок_1
-    2 - победил игрок_2
-    3 - ничья
+    принимаемое значение:
+    р - список содержащий значения клеток поля
+    w = 1 - победил игрок_1
+    w = 2 - победил игрок_2
+    w = 3 - ничья
+    :return: w
+
     '''
     w = 0
     if p[0] == p[1] == p[2] == 'X' or p[3] == p[4] == p[5] == 'X' or p[6] == p[7] == p[8] == 'X' \
