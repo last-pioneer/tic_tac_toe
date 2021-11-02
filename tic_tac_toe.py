@@ -106,6 +106,7 @@ def game_master(name_1, name_2, priority):
             print('Ошибка определения победителя в game_master')
         time.sleep(3)
 
+
 def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
     winner = 0
     turn_counter = 1
