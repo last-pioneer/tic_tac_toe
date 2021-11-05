@@ -11,7 +11,7 @@ def greetings():
     """
     Эта функция будет приветствовать игроков, узнавать имена, разыгрывать очередность ходов \
     и знакомить с правилами игры.
-    :return: name_1, name_2, priority
+    :return: name_1, name_2
     """
 
     print('\n' * 10)
@@ -34,12 +34,13 @@ def greetings():
     if r == 1:
         p_3 = 0
         print('Первым ходит: ' + p_1 + '   Вторым ходит: ' + p_2)
+        p_1, p_2 = p_2, p_1
     else:
         p_3 = 1
         print('Первым ходит: ' + p_2 + '   Вторым ходит: ' + p_1)
     time.sleep(2)
     print('\n' * 100)
-    return p_1, p_2, p_3
+    return p_1, p_2
 
 
 def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p, round_counter):
@@ -69,14 +70,13 @@ def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p, round_counter):
     print('\n' * 3)
 
 
-def game_master(name_1, name_2, priority):
+def game_master(name_1, name_2):
     """
     Эта функция будет контролировать игровой процесс.
     р - это список значений клеток поля игры, для определения правильности ходов, ничьей или победы.
     s_g_0 - переменная будет хранить кол-во игр сыгранных в ничью
     s_g_1 - переменная будет хранить кол-во игр выигранных игроком_1
     s_g_2 - переменная будет хранить кол-во игр выигранных игроком_2
-    priority - хранит очередность ходов.
     round_counter - счетчик раундов
 
     :return: none
@@ -145,8 +145,6 @@ def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
             playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
             print('Ходы закончились, ничья, попробуйте сыграть еще!')
             return p, winner, round_counter
-    print('Непонятный результат в функции game_round ' + str(winner))
-    print(p)
     return p
 
 
@@ -188,8 +186,6 @@ def game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
             playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
             print('Ходы закончились, ничья, попробуйте сыграть еще!')
             return p, winner, round_counter
-    print('Непонятный результат в функции game_round ' + str(winner))
-    print(p)
     return p
 
 
@@ -249,5 +245,6 @@ def win(p):
         return w
 
 
-p1, p2, p3 = greetings()
-game_master(p1, p2, p3)
+p1, p2 = greetings()
+# print(p1, p2)
+game_master(p1, p2)
