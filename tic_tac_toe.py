@@ -121,7 +121,7 @@ def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
     """
     winner = 0
     turn_counter = 1
-    while turn_counter < 10:
+    while turn_counter < 11:
         if win(p) == 0:
             if turn_counter % 2 != 0:
                 playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
@@ -205,7 +205,10 @@ def game_turn(p, name, symbol):
         x = input('Игрок: ' + name + ', сделайте свой ход, нажмите кнопку 1-9 : ')
         if x in y and x != '':
             x = int(x)
-            if p[x - 1] != ' ':
+            if x > 9:
+                print('Вы ввели не правильное число, введите цифру от 1 до 9.')
+                continue
+            elif 0 < x < 9 and p[x - 1] != ' ':
                 print('Клеточка занята, выберите цифру не занятой клеточки!')
             else:
                 p[x - 1] = symbol
@@ -246,5 +249,4 @@ def win(p):
 
 
 p1, p2 = greetings()
-# print(p1, p2)
 game_master(p1, p2)
