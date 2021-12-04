@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import time
 import random as rd
 
@@ -68,43 +71,6 @@ def playing_field(gamer_1, s_g_1, gamer_2, s_g_2, s_g_0, p, round_counter):
     print('   |   ' + p[0] + '   |   ' + p[1] + '   |   ' + p[2] + '   |    1    2    3')
     print('   |       |       |       |')
     print('\n' * 3)
-
-
-def game_master(name_1, name_2):
-    """
-    Эта функция будет контролировать игровой процесс.
-    р - это список значений клеток поля игры, для определения правильности ходов, ничьей или победы.
-    s_g_0 - переменная будет хранить кол-во игр сыгранных в ничью
-    s_g_1 - переменная будет хранить кол-во игр выигранных игроком_1
-    s_g_2 - переменная будет хранить кол-во игр выигранных игроком_2
-    round_counter - счетчик раундов
-
-    :return: none
-    """
-    p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-    round_counter = 0
-    s_g_0 = int(0)
-    s_g_1 = int(0)
-    s_g_2 = int(0)
-    winner = 4
-    counter = 0
-    while counter <= 11:
-        if round_counter % 2 != 0:
-            p, winner, round_counter = game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter)
-        else:
-            p, winner, round_counter = game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter)
-        round_counter += 1
-        counter += 1
-        p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-        if winner == 0:
-            s_g_0 += 1
-        elif winner == 1:
-            s_g_1 += 1
-        elif winner == 2:
-            s_g_2 += 1
-        else:
-            print('Ошибка определения победителя в game_master')
-        time.sleep(3)
 
 
 def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
@@ -246,6 +212,43 @@ def win(p):
         return w
     else:
         return w
+
+
+def game_master(name_1, name_2):
+    """
+    Эта функция будет контролировать игровой процесс.
+    р - это список значений клеток поля игры, для определения правильности ходов, ничьей или победы.
+    s_g_0 - переменная будет хранить кол-во игр сыгранных в ничью
+    s_g_1 - переменная будет хранить кол-во игр выигранных игроком_1
+    s_g_2 - переменная будет хранить кол-во игр выигранных игроком_2
+    round_counter - счетчик раундов
+
+    :return: none
+    """
+    p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    round_counter = 0
+    s_g_0 = int(0)
+    s_g_1 = int(0)
+    s_g_2 = int(0)
+    winner = 4
+    counter = 0
+    while counter <= 20:
+        if round_counter % 2 != 0:
+            p, winner, round_counter = game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter)
+        else:
+            p, winner, round_counter = game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter)
+        round_counter += 1
+        counter += 1
+        p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+        if winner == 0:
+            s_g_0 += 1
+        elif winner == 1:
+            s_g_1 += 1
+        elif winner == 2:
+            s_g_2 += 1
+        else:
+            print('Ошибка определения победителя в game_master')
+        time.sleep(3)
 
 
 p1, p2 = greetings()
