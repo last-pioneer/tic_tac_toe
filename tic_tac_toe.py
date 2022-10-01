@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
 Моя первая самостоятельная программа.
 """
-
 import time
 import random as rd
 
@@ -14,8 +12,8 @@ def greetings():
     Эта функция будет приветствовать игроков, знакомить с правилами игры, узнавать имена и
     разыгрывать очередность ходов.
     :return:
-    p_1 -
-    p_2 -
+    p_1 - [имя игрока, символ хода, очередность, кол-во побед]
+    p_2 - [имя игрока, символ хода, очередность, кол-во побед]
     """
 
     print('\n' * 10)
@@ -38,23 +36,23 @@ def greetings():
     print('\n' * 100)
     r = rd.randint(1, 4)
     if r == 1:
-        p_1 = [p_1, 'X', 0]
-        p_2 = [p_2, '0', 1]
+        p_1 = [p_1, 'X', 0, 0]
+        p_2 = [p_2, '0', 1, 0]
         print('Первым ходит: ' + p_1[0] + ',  вы играете: X')
         print('Вторым ходит: ' + p_2[0] + ',  вы играете: 0')
     elif r == 2:
-        p_1 = [p_1, 'X', 1]
-        p_2 = [p_2, '0', 0]
+        p_1 = [p_1, 'X', 1, 0]
+        p_2 = [p_2, '0', 0, 0]
         print('Первым ходит: ' + p_2[0] + ',  вы играете: X')
         print('Вторым ходит: ' + p_1[0] + ',  вы играете: 0')
     elif r == 3:
-        p_1 = [p_1, '0', 0]
-        p_2 = [p_2, 'X', 1]
+        p_1 = [p_1, '0', 0, 0]
+        p_2 = [p_2, 'X', 1, 0]
         print('Первым ходит: ' + p_1[0] + ',  вы играете: 0')
         print('Вторым ходит: ' + p_2[0] + ',  вы играете: X')
     else:
-        p_1 = [p_1, '0', 1]
-        p_2 = [p_2, 'X', 0]
+        p_1 = [p_1, '0', 1, 0]
+        p_2 = [p_2, 'X', 0, 0]
         print('Первым ходит: ' + p_2[0] + ',  вы играете: 0\n'
                                           'Вторым ходит: ' + p_1[0] + ',  вы играете: X')
     #    time.sleep(4)
@@ -67,26 +65,26 @@ def playing_field(p_1, p_2, counters):
     Эта функция будет создавать, обновлять и отрисовывать изменения на игровом поле.
     Print('\n'*100) --> Рисует 100 пустых строк, тем самым затирая все что было в 100 строках
     """
-    p = counters[4]
+    g = counters[2]
     print('\n' * 10)
     print('     Крестики нолики 1.0')
     print('   ' + str(counters[0]) + ' - игр сыграно всего')
     print('   ' + str(counters[1]) + ' - игр сыграно в ничью')
-    print('   ' + str(counters[2]) + ' - игр выиграл ' + p_1[0] + '  играет: ' + str(p_1[1]))
-    print('   ' + str(counters[3]) + ' - игр выиграл ' + p_2[0] + '  играет: ' + str(p_2[1]))
+    print('   ' + str(p_1[3]) + ' - игр выиграл ' + p_1[0] + '  играет: ' + str(p_1[1]))
+    print('   ' + str(p_2[3]) + ' - игр выиграл ' + p_2[0] + '  играет: ' + str(p_2[1]))
     print('\n')
     print('Для выхода из игры введите: N или Н')
     print('\n')
     print('   |       |       |       |')
-    print('   |   ' + str(p[6]) + '   |   ' + str(p[7]) + '   |   ' + str(p[8]) + '   |    7    8    9')
+    print('   |   ' + str(g[6]) + '   |   ' + str(g[7]) + '   |   ' + str(g[8]) + '   |    7    8    9')
     print('   |       |       |       |')
     print('   -------------------------')
     print('   |       |       |       |')
-    print('   |   ' + str(p[3]) + '   |   ' + str(p[4]) + '   |   ' + str(p[5]) + '   |    4    5    6')
+    print('   |   ' + str(g[3]) + '   |   ' + str(g[4]) + '   |   ' + str(g[5]) + '   |    4    5    6')
     print('   |       |       |       |')
     print('   -------------------------')
     print('   |       |       |       |')
-    print('   |   ' + str(p[0]) + '   |   ' + str(p[1]) + '   |   ' + str(p[2]) + '   |    1    2    3')
+    print('   |   ' + str(g[0]) + '   |   ' + str(g[1]) + '   |   ' + str(g[2]) + '   |    1    2    3')
     print('   |       |       |       |')
     print('\n' * 3)
 
@@ -101,10 +99,10 @@ def game_input(name, counters):
     while True:
         x = input('Игрок: ' + name + ', сделайте свой ход, нажмите кнопку 1-9 : ')
         if x.lower() == 'n' or x.lower() == 'н':
-            return False
+            return "N"
         elif x in y and x != "":
             if 0 <= int(x) <= 9:
-                if counters[4][int(x) - 1] == ' ':
+                if counters[2][int(x) - 1] == ' ':
                     return int(x)
                 else:
                     print('Неверный ход, выберите незанятую клеточку.')
@@ -121,7 +119,7 @@ def win(p, g):
             or p[0] == p[3] == p[6] == g[1] or p[1] == p[4] == p[7] == g[1] or p[2] == p[5] == p[8] == g[1] \
             or p[0] == p[4] == p[8] == g[1] or p[2] == p[4] == p[6] == g[1]:
         return 1
-    elif " " not in p:  # counters[4].count(" ") == 0:
+    elif " " not in p:  # counters[2].count(" ") == 0:
         return 2
     else:
         return 0
@@ -140,47 +138,47 @@ def game_round(p_1, p_2, counters):
         playing_field(p_1, p_2, counters)
         if k % 2 == 0 and k < 9:
             x = game_input(p_1[0], counters)
-            if not True:
+            if str(x) == "N":
                 print('\n' * 100)
                 print("Возвращайтесь скорей!\nИграйте в хорошие игры!")
                 time.sleep(3)
-                return False
-            counters[4][int(x) - 1] = p_1[1]
-            z = win(counters[4], p_1)
+                return "N"
+            counters[2][int(x) - 1] = p_1[1]
+            z = win(counters[2], p_1)
             if z == 1:
                 counters[0] += 1
-                counters[2] += 1
+                p_1[3] += 1
                 playing_field(p_1, p_2, counters)
                 print(p_1[0] + " - Победа за вами!")
-                counters[4] = [' '] * 9
-                return counters
+                counters[2] = [' '] * 9
+                return False
             elif z == 2:
                 counters[0] += 1
                 counters[1] += 1
                 playing_field(p_1, p_2, counters)
                 print("Ничья!\nПопробуйте сыграть ещё!")
-                counters[4] = [' '] * 9
-                return counters
+                counters[2] = [' '] * 9
+                return False
             else:
                 k += 1
         elif k % 2 != 0 and k < 9:
             x = game_input(p_2[0], counters)
-            counters[4][int(x) - 1] = p_2[1]
-            z = win(counters[4], p_2)
+            counters[2][int(x) - 1] = p_2[1]
+            z = win(counters[2], p_2)
             if z == 1:
                 counters[0] += 1
-                counters[3] += 1
+                p_2[3] += 1
                 playing_field(p_1, p_2, counters)
                 print(p_2[0] + " - Победа за вами!")
-                counters[4] = [' '] * 9
-                return counters
+                counters[2] = [' '] * 9
+                return False
             elif z == 2:
                 counters[0] += 1
                 counters[1] += 1
                 playing_field(p_1, p_2, counters)
                 print("Ничья!\nПопробуйте сыграть ещё!")
-                counters[4] = [' '] * 9
-                return counters
+                counters[2] = [' '] * 9
+                return False
             else:
                 k += 1
 
@@ -190,23 +188,23 @@ def game_master(p_1, p_2):
     Эта функция будет контролировать игровой процесс.
     counters[0] - round_counter - счетчик раундов
     counters[1] - переменная будет хранить кол-во игр сыгранных в ничью
-    counters[2] - переменная будет хранить кол-во игр выигранных игроком_1
-    counters[3] - переменная будет хранить кол-во игр выигранных игроком_2
-    counters[4] - р - это список значений клеток поля игры.
+    counters[2] - р - это список значений клеток поля игры.
     :return: none
     """
-    p = [' '] * 9
-    counters = [0, 0, 0, 0, p]
+    v = [' '] * 9
+    counters = [0, 0, v]
+    rounds = 0
     while True:
-        game_round(p_1, p_2, counters)
+        if rounds % 2 == 0:
+            game_round(p_1, p_2, counters)
+            time.sleep(2)
+            rounds += 1
+        else:
+            game_round(p_2, p_1, counters)
+            time.sleep(2)
+            rounds += 1
 
-        time.sleep(2)
 
-
-p = [' '] * 9
-player_1 = ['Ваня', 0, 1]
-player_2 = ['Игорь', 'X', 0]
-counters = [0, 0, 0, 0, p]
-# player_1, player_2 = greetings()
-# game_master(player_1, player_2)
-game_round(player_1, player_2, counters)
+player_1 = ['Ваня', 0, 1, 5]
+player_2 = ['Игорь', 'X', 0, 6]
+game_master(player_1, player_2)
