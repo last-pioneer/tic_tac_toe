@@ -142,7 +142,7 @@ def game_round(p_1, p_2, counters):
                 print('\n' * 100)
                 print("Возвращайтесь скорей!\nИграйте в хорошие игры!")
                 time.sleep(3)
-                return "N"
+                return False
             counters[2][int(x) - 1] = p_1[1]
             z = win(counters[2], p_1)
             if z == 1:
@@ -150,19 +150,25 @@ def game_round(p_1, p_2, counters):
                 p_1[3] += 1
                 playing_field(p_1, p_2, counters)
                 print(p_1[0] + " - Победа за вами!")
+                time.sleep(3)
                 counters[2] = [' '] * 9
-                return False
+                return True
             elif z == 2:
                 counters[0] += 1
                 counters[1] += 1
                 playing_field(p_1, p_2, counters)
                 print("Ничья!\nПопробуйте сыграть ещё!")
                 counters[2] = [' '] * 9
-                return False
+                return True
             else:
                 k += 1
         elif k % 2 != 0 and k < 9:
             x = game_input(p_2[0], counters)
+            if str(x) == "N":
+                print('\n' * 100)
+                print("Возвращайтесь скорей!\nИграйте в хорошие игры!")
+                time.sleep(3)
+                return False
             counters[2][int(x) - 1] = p_2[1]
             z = win(counters[2], p_2)
             if z == 1:
@@ -170,15 +176,16 @@ def game_round(p_1, p_2, counters):
                 p_2[3] += 1
                 playing_field(p_1, p_2, counters)
                 print(p_2[0] + " - Победа за вами!")
+                time.sleep(3)
                 counters[2] = [' '] * 9
-                return False
+                return True
             elif z == 2:
                 counters[0] += 1
                 counters[1] += 1
                 playing_field(p_1, p_2, counters)
                 print("Ничья!\nПопробуйте сыграть ещё!")
                 counters[2] = [' '] * 9
-                return False
+                return True
             else:
                 k += 1
 
@@ -196,13 +203,13 @@ def game_master(p_1, p_2):
     rounds = 0
     while True:
         if rounds % 2 == 0:
-            game_round(p_1, p_2, counters)
-            time.sleep(2)
             rounds += 1
+            if not game_round(p_1, p_2, counters):
+                break
         else:
-            game_round(p_2, p_1, counters)
-            time.sleep(2)
             rounds += 1
+            if not game_round(p_2, p_1, counters):
+                break
 
 
 player_1 = ['Ваня', 0, 1, 5]
