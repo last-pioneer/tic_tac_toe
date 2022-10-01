@@ -34,7 +34,7 @@ def greetings():
     print('\n' * 100)
     print('Чудесно, ' + p_1 + ' и ' + p_2 + ' теперь мы случайно определим очередность ходов. ')
     print('Также определим кому играть Х а кому 0.')
-#    time.sleep(3)
+    #    time.sleep(3)
     print('\n' * 100)
     r = rd.randint(1, 4)
     if r == 1:
@@ -56,8 +56,8 @@ def greetings():
         p_1 = [p_1, '0', 1]
         p_2 = [p_2, 'X', 0]
         print('Первым ходит: ' + p_2[0] + ',  вы играете: 0\n'
-              'Вторым ходит: ' + p_1[0] + ',  вы играете: X')
-#    time.sleep(4)
+                                          'Вторым ходит: ' + p_1[0] + ',  вы играете: X')
+    #    time.sleep(4)
     print('\n' * 100)
     return p_1, p_2
 
@@ -72,184 +72,141 @@ def playing_field(p_1, p_2, counters):
     print('     Крестики нолики 1.0')
     print('   ' + str(counters[0]) + ' - игр сыграно всего')
     print('   ' + str(counters[1]) + ' - игр сыграно в ничью')
-    print('   ' + str(counters[2]) + ' - игр выиграл ' + p_1[0])
-    print('   ' + str(counters[3]) + ' - игр выиграл ' + p_2[0])
+    print('   ' + str(counters[2]) + ' - игр выиграл ' + p_1[0] + '  играет: ' + str(p_1[1]))
+    print('   ' + str(counters[3]) + ' - игр выиграл ' + p_2[0] + '  играет: ' + str(p_2[1]))
     print('\n')
     print('Для выхода из игры введите: N или Н')
     print('\n')
     print('   |       |       |       |')
-    print('   |   ' + p[6] + '   |   ' + p[7] + '   |   ' + p[8] + '   |    7    8    9')
+    print('   |   ' + str(p[6]) + '   |   ' + str(p[7]) + '   |   ' + str(p[8]) + '   |    7    8    9')
     print('   |       |       |       |')
     print('   -------------------------')
     print('   |       |       |       |')
-    print('   |   ' + p[3] + '   |   ' + p[4] + '   |   ' + p[5] + '   |    4    5    6')
+    print('   |   ' + str(p[3]) + '   |   ' + str(p[4]) + '   |   ' + str(p[5]) + '   |    4    5    6')
     print('   |       |       |       |')
     print('   -------------------------')
     print('   |       |       |       |')
-    print('   |   ' + p[0] + '   |   ' + p[1] + '   |   ' + p[2] + '   |    1    2    3')
+    print('   |   ' + str(p[0]) + '   |   ' + str(p[1]) + '   |   ' + str(p[2]) + '   |    1    2    3')
     print('   |       |       |       |')
     print('\n' * 3)
 
 
-'''
-def game_round_odd(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
+def game_input(name, counters):
     """
-    нечетный раунд
-    :param name_1:
-    :param name_2:
-    :param p:
-    :param s_g_0:
-    :param s_g_1:
-    :param s_g_2:
-    :param round_counter:
-    :return: р - список содержащий значения клеток поля
+    Функция обрабатывает данные введенные игроком с клавиатуры
+    ход игрока, проверяет правильность ввода данных.
+    :return:
     """
-    winner = 0
-    turn_counter = 1
-    while turn_counter < 11:
-        if win(p) == 0:
-            if turn_counter % 2 != 0:
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                game_turn(p, name_1, 'X')
-                turn_counter += 1
-            else:
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                game_turn(p, name_2, 'O')
-                turn_counter += 1
-        elif win(p) == 1:
-            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-            print('Победил игрок -  ' + name_1 + ' Поздравляем!')
-            winner = 1
-            return p, winner, round_counter
-        elif win(p) == 2:
-            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-            print('Победил игрок -  ' + name_2 + ' Поздравляем!')
-            winner = 2
-            return p, winner, round_counter
-        else:
-            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-            print('Ходы закончились, ничья, попробуйте сыграть еще!')
-            return p, winner, round_counter
-    return p
-
-
-def game_round_even(name_1, name_2, p, s_g_0, s_g_1, s_g_2, round_counter):
-    """
-    четный раунд
-    :param name_1:
-    :param name_2:
-    :param p:
-    :param s_g_0:
-    :param s_g_1:
-    :param s_g_2:
-    :param round_counter:
-    :return: p - список содержащий значения клеток поля
-    """
-    winner = 0
-    turn_counter = 1
-    while turn_counter < 11:
-        if win(p) == 0:
-            if turn_counter % 2 != 0:
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                game_turn(p, name_2, 'X')
-                turn_counter += 1
-            else:
-                playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-                game_turn(p, name_1, 'O')
-                turn_counter += 1
-        elif win(p) == 1:
-            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-            print('Победил игрок -  ' + name_2 + ' Поздравляем!')
-            winner = 2
-            return p, winner, round_counter
-        elif win(p) == 2:
-            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-            print('Победил игрок -  ' + name_1 + ' Поздравляем!')
-            winner = 1
-            return p, winner, round_counter
-        else:
-            playing_field(name_1, s_g_1, name_2, s_g_2, s_g_0, p, round_counter)
-            print('Ходы закончились, ничья, попробуйте сыграть еще!')
-            return p, winner, round_counter
-    return p
-
-
-def game_turn(p, name, symbol):
-    """
-    Функция обрабатывает ход игрока, проверяет правильность ввода и \
-     добавляет в список поля крестик или нолик
-
-    param p: список содержащий значения клеток поля перед ходом
-    param name: имя текущего игрока
-    param symbol: крестик или нолик
-    return: р - список содержащий значения клеток поля после хода
-    """
-    y = '123456789'
-    q = 0
-    while q != 1:
+    y = "123456789"
+    while True:
         x = input('Игрок: ' + name + ', сделайте свой ход, нажмите кнопку 1-9 : ')
-        if x in y and x != '':
-            x = int(x)
-            if x > 9:
-                print('Выбор неверный, введите цифру от 1 до 9.')
-                continue
-            elif 0 < x < 9 and p[x - 1] != ' ':
-                print('Клеточка занята, выберите цифру не занятой клеточки!')
-            else:
-                p[x - 1] = symbol
-                q = 1
-                return p
+        if x.lower() == 'n' or x.lower() == 'н':
+            return False
+        elif x in y and x != "":
+            if 0 <= int(x) <= 9:
+                if counters[4][int(x) - 1] == ' ':
+                    return int(x)
+                else:
+                    print('Неверный ход, выберите незанятую клеточку.')
         else:
             print('Выбор неверный, введите цифру от 1 до 9.')
-    pass
 
 
-def win(p):
+def win(p, g):
     """
-    Функция определяет завершение раунда
-    return: w
+    Функция определяет, завершился ли ход победой.
+    :return: Bool
     """
-    w = 0
-    if p[0] == p[1] == p[2] == 'X' or p[3] == p[4] == p[5] == 'X' or p[6] == p[7] == p[8] == 'X' \
-            or p[0] == p[3] == p[6] == 'X' or p[1] == p[4] == p[7] == 'X' or p[2] == p[5] == p[8] == 'X' \
-            or p[0] == p[4] == p[8] == 'X' or p[2] == p[4] == p[6] == 'X':
-        w = 1
-        return w
-    elif p[0] == p[1] == p[2] == 'O' or p[3] == p[4] == p[5] == 'O' or p[6] == p[7] == p[8] == 'O' \
-            or p[0] == p[3] == p[6] == 'O' or p[1] == p[4] == p[7] == 'O' or p[2] == p[5] == p[8] == 'O' \
-            or p[0] == p[4] == p[8] == 'O' or p[2] == p[4] == p[6] == 'O':
-        w = 2
-        return w
-    elif p.count(' ') == 0:
-        w = 3
-        return w
+    if p[0] == p[1] == p[2] == g[1] or p[3] == p[4] == p[5] == g[1] or p[6] == p[7] == p[8] == g[1] \
+            or p[0] == p[3] == p[6] == g[1] or p[1] == p[4] == p[7] == g[1] or p[2] == p[5] == p[8] == g[1] \
+            or p[0] == p[4] == p[8] == g[1] or p[2] == p[4] == p[6] == g[1]:
+        return 1
+    elif " " not in p:  # counters[4].count(" ") == 0:
+        return 2
     else:
-        return w
-'''
+        return 0
 
 
 def game_round(p_1, p_2, counters):
-    playing_field(p_1, p_2, counters)
+    """
+    Функция обрабатывает игровой раунд, ходы игроков, и добавляет в список поля крестик или нолик.
+    :return:
+    р_1 -
+    p_2 -
+    counters -
+    """
+    k = 0
+    while True:
+        playing_field(p_1, p_2, counters)
+        if k % 2 == 0 and k < 9:
+            x = game_input(p_1[0], counters)
+            if not True:
+                print('\n' * 100)
+                print("Возвращайтесь скорей!\nИграйте в хорошие игры!")
+                time.sleep(3)
+                return False
+            counters[4][int(x) - 1] = p_1[1]
+            z = win(counters[4], p_1)
+            if z == 1:
+                counters[0] += 1
+                counters[2] += 1
+                playing_field(p_1, p_2, counters)
+                print(p_1[0] + " - Победа за вами!")
+                counters[4] = [' '] * 9
+                return counters
+            elif z == 2:
+                counters[0] += 1
+                counters[1] += 1
+                playing_field(p_1, p_2, counters)
+                print("Ничья!\nПопробуйте сыграть ещё!")
+                counters[4] = [' '] * 9
+                return counters
+            else:
+                k += 1
+        elif k % 2 != 0 and k < 9:
+            x = game_input(p_2[0], counters)
+            counters[4][int(x) - 1] = p_2[1]
+            z = win(counters[4], p_2)
+            if z == 1:
+                counters[0] += 1
+                counters[3] += 1
+                playing_field(p_1, p_2, counters)
+                print(p_2[0] + " - Победа за вами!")
+                counters[4] = [' '] * 9
+                return counters
+            elif z == 2:
+                counters[0] += 1
+                counters[1] += 1
+                playing_field(p_1, p_2, counters)
+                print("Ничья!\nПопробуйте сыграть ещё!")
+                counters[4] = [' '] * 9
+                return counters
+            else:
+                k += 1
 
 
 def game_master(p_1, p_2):
     """
     Эта функция будет контролировать игровой процесс.
-    р - это список значений клеток поля игры, для определения правильности ходов, ничьей или победы.
     counters[0] - round_counter - счетчик раундов
     counters[1] - переменная будет хранить кол-во игр сыгранных в ничью
     counters[2] - переменная будет хранить кол-во игр выигранных игроком_1
     counters[3] - переменная будет хранить кол-во игр выигранных игроком_2
-
+    counters[4] - р - это список значений клеток поля игры.
     :return: none
     """
-    p = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    p = [' '] * 9
     counters = [0, 0, 0, 0, p]
     while True:
         game_round(p_1, p_2, counters)
 
-        time.sleep(3)
+        time.sleep(2)
 
 
-player_1, player_2 = greetings()
-game_master(player_1, player_2)
+p = [' '] * 9
+player_1 = ['Ваня', 0, 1]
+player_2 = ['Игорь', 'X', 0]
+counters = [0, 0, 0, 0, p]
+# player_1, player_2 = greetings()
+# game_master(player_1, player_2)
+game_round(player_1, player_2, counters)
