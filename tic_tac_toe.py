@@ -125,69 +125,58 @@ def win(p, g):
         return 0
 
 
+def turn_handler(p_1, p_2, counters, p_3):
+    x = game_input(p_3[0], counters)
+    if str(x) == "N":
+        print('\n' * 100)
+        print("Возвращайтесь скорей!\nИграйте в хорошие игры!")
+        time.sleep(3)
+        return False
+    counters[2][int(x) - 1] = p_3[1]
+    z = win(counters[2], p_3)
+    if z == 1:
+        counters[0] += 1
+        p_3[3] += 1
+        playing_field(p_1, p_2, counters)
+        print(p_3[0] + " - Победа за вами!")
+        time.sleep(3)
+        counters[2] = [' '] * 9
+        return False
+    elif z == 2:
+        counters[0] += 1
+        counters[1] += 1
+        playing_field(p_1, p_2, counters)
+        print("Ничья!\nПопробуйте сыграть ещё!")
+        counters[2] = [' '] * 9
+        return True
+    else:
+        return True
+
+
+def continue_game():
+    x = input("Хотите сыграть еще? Введите любой символ.\nЗавершить игру "
+              "введите N или Н: ")
+    return not (x.lower() == 'n' or x.lower() == 'н')
+
+
 def game_round(p_1, p_2, counters):
     """
-    Функция обрабатывает игровой раунд, ходы игроков, и добавляет в список поля крестик или нолик.
+    Функция передает ход от одного игрока другому.
     :return:
-    р_1 -
-    p_2 -
-    counters -
     """
     k = 0
     while True:
         playing_field(p_1, p_2, counters)
-        if k % 2 == 0 and k < 9:
-            x = game_input(p_1[0], counters)
-            if str(x) == "N":
-                print('\n' * 100)
-                print("Возвращайтесь скорей!\nИграйте в хорошие игры!")
-                time.sleep(3)
-                return False
-            counters[2][int(x) - 1] = p_1[1]
-            z = win(counters[2], p_1)
-            if z == 1:
-                counters[0] += 1
-                p_1[3] += 1
-                playing_field(p_1, p_2, counters)
-                print(p_1[0] + " - Победа за вами!")
-                time.sleep(3)
-                counters[2] = [' '] * 9
-                return True
-            elif z == 2:
-                counters[0] += 1
-                counters[1] += 1
-                playing_field(p_1, p_2, counters)
-                print("Ничья!\nПопробуйте сыграть ещё!")
-                counters[2] = [' '] * 9
-                return True
+        k += 1
+        if k % 2 == 0 and turn_handler(p_1, p_2, counters, p_1):
+            print('что за хуйня! 1 ')
+        elif k % 2 != 0 and turn_handler(p_1, p_2, counters, p_2):
+            print('что за хуйня! 2')
+        else:
+            if continue_game():
+                continue
             else:
-                k += 1
-        elif k % 2 != 0 and k < 9:
-            x = game_input(p_2[0], counters)
-            if str(x) == "N":
-                print('\n' * 100)
-                print("Возвращайтесь скорей!\nИграйте в хорошие игры!")
-                time.sleep(3)
-                return False
-            counters[2][int(x) - 1] = p_2[1]
-            z = win(counters[2], p_2)
-            if z == 1:
-                counters[0] += 1
-                p_2[3] += 1
-                playing_field(p_1, p_2, counters)
-                print(p_2[0] + " - Победа за вами!")
-                time.sleep(3)
-                counters[2] = [' '] * 9
-                return True
-            elif z == 2:
-                counters[0] += 1
-                counters[1] += 1
-                playing_field(p_1, p_2, counters)
-                print("Ничья!\nПопробуйте сыграть ещё!")
-                counters[2] = [' '] * 9
-                return True
-            else:
-                k += 1
+                break
 
 
 def game_master(p_1, p_2):
@@ -206,12 +195,20 @@ def game_master(p_1, p_2):
             rounds += 1
             if not game_round(p_1, p_2, counters):
                 break
+            else:
+                continue
         else:
             rounds += 1
-            if not game_round(p_2, p_1, counters):
+            if not game_round(p_1, p_2, counters):
                 break
+            else:
+                continue
 
 
+# v = [' '] * 9
+# counters = [0, 0, v]
 player_1 = ['Ваня', 0, 1, 5]
-player_2 = ['Игорь', 'X', 0, 6]
+player_2 = ['Игорь', 'X', 0, 5]
 game_master(player_1, player_2)
+# game_round(player_1, player_2, counters)
+# turn_handler(player_1, player_2, counters, player_1)
